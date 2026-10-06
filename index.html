@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayawaso West Municipal Assembly — Citizen Complaints Register</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 48 48" fill="none">
+      <circle cx="24" cy="24" r="23" stroke="#C89B3C" stroke-width="2"/>
+      <path d="M24 10L34 16V24C34 31 30 36 24 38C18 36 14 31 14 24V16L24 10Z" fill="#C89B3C" opacity="0.15" stroke="#C89B3C" stroke-width="1.5"/>
+      <path d="M18 23L22 27L30 18" stroke="#F3EFE3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="brand-text">
+      <h1>Ayawaso West Municipal Assembly</h1>
+      <p>CITIZEN COMPLAINTS REGISTER</p>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" data-view="submit">Submit a complaint</button>
+    <button class="tab-btn" data-view="track">Track my complaint</button>
+    <button class="tab-btn" data-view="dashboard">Staff register</button>
+    <button class="tab-btn logout-btn" id="btn-logout" style="display:none;">Log out</button>
+  </div>
+</div>
+
+<main>
+
+  <div class="view active" id="view-submit">
+    <div class="submit-grid">
+      <div class="card">
+        <h2>Report an issue</h2>
+        <p class="subhead">Tell us what's wrong and where. Assembly staff will review and act on it.</p>
+
+        <div class="field-row">
+          <div>
+            <label for="f-name">Full name *</label>
+            <input type="text" id="f-name" placeholder="Abdul Rashid">
+          </div>
+          <div>
+            <label for="f-phone">Phone number *</label>
+            <input type="tel" id="f-phone" placeholder="0209507426">
+          </div>
+        </div>
+
+        <label for="f-area">Community / area *</label>
+        <input type="text" id="f-area" placeholder="e.g. Nima, Kanda, Alajo, Kotobabi">
+
+        <label>Category *</label>
+        <div class="cat-grid" id="cat-grid"></div>
+
+        <label for="f-desc">Describe the issue *</label>
+        <textarea id="f-desc" placeholder="Where exactly, since when, and how it's affecting the area..."></textarea>
+
+        <button class="btn-primary" id="btn-submit">Submit complaint</button>
+
+        <div class="confirm-box" id="confirm-box">
+          Complaint received. Your reference number is <strong id="confirm-id"></strong> — keep it to follow up with the assembly office.
+          <div style="margin-top:12px;">
+            <button class="btn-secondary" id="btn-track-this">Track this complaint &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 style="font-size:18px;">How it's handled</h2>
+        <p class="subhead">Every complaint moves through three stages.</p>
+        <ol class="steps">
+          <li><b>Submitted</b>You file the complaint here or at the assembly office. It gets a reference number instantly.</li>
+          <li><b>Reviewed</b>A staff member assigns it to the right department and marks it "In progress."</li>
+          <li><b>Resolved</b>The issue is fixed on the ground and the record is closed, with a note on what was done.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="view" id="view-track">
+    <div class="card track-card">
+      <h2>Track your complaint</h2>
+      <p class="subhead">Enter the reference number you received when you filed your complaint (e.g. AYWMA-2026-4821).</p>
+
+      <div class="track-search-row">
+        <input type="text" id="track-input" placeholder="AYWMA-2026-####">
+        <button class="btn-primary" id="btn-track-search">Search</button>
+      </div>
+
+      <div class="track-error" id="track-error">No complaint found with that reference number. Please check and try again.</div>
+
+      <div class="track-result" id="track-result"></div>
+    </div>
+  </div>
+
+  <div class="view" id="view-dashboard">
+
+    <div class="login-wrap" id="login-wrap">
+      <div class="card login-card">
+        <h2>Staff login</h2>
+        <p class="subhead">Sign in to view and manage the complaints register.</p>
+
+        <label for="login-username">Username</label>
+        <input type="text" id="login-username" placeholder="admin" autocomplete="username">
+
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="current-password">
+
+        <button class="btn-primary" id="btn-login">Log in</button>
+        <div class="login-error" id="login-error">Invalid username or password.</div>
+
+        <div class="login-hint">
+          Demo credentials — Admin: <code>admin</code> / <code>admin123</code><br>
+          Officer: <code>officer</code> / <code>officer123</code>
+        </div>
+      </div>
+    </div>
+
+    <div id="dashboard-content" style="display:none;">
+      <div class="stat-row" id="stat-row"></div>
+
+      <div class="filter-bar">
+        <select id="filter-status">
+          <option value="">All statuses</option>
+          <option value="Pending">Pending</option>
+          <option value="In-Progress">In progress</option>
+          <option value="Resolved">Resolved</option>
+        </select>
+        <select id="filter-category">
+          <option value="">All categories</option>
+        </select>
+        <input type="text" id="filter-search" placeholder="Search by area or keyword">
+        <div class="spacer"></div>
+        <span class="count" id="filter-count"></span>
+      </div>
+
+      <div class="complaint-list" id="complaint-list"></div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>Ayawaso West Municipal Assembly </footer>
+
+<script src="script.js"></script>
+</body>
+</html>
